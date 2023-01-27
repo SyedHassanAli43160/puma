@@ -1,0 +1,17 @@
+﻿<div>
+    <form asp-action="mapdata" method="post">
+    <select form="myform" name="categorymaster">
+            @foreach (var item in Model.categoryMasters)
+            {
+                <option asp-for="Name" value="@item.categoryName">@item.categoryName</option>
+            }
+    </select>
+    <select form="myform" name="stationmaster">
+            @foreach (var item in Model.stationMasters)
+            {
+                <option asp-for="Name" value="@item.Name">@item.Name</option>
+            }
+    </select>
+    <input type="submit" class="btn btn-primary"/ value="Map Data">
+    </form>
+</div>

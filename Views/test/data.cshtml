@@ -1,0 +1,6 @@
+﻿@model IEnumerable<puma.Models.test>
+@foreach(var item in Model){
+    <h1>@item.latitude</h1>
+    <h2>@item.longitude</h2>
+    <script> console.log(@item.latitude)</script>
+}

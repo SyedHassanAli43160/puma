@@ -1,0 +1,77 @@
+﻿@using puma.Models;
+@model dynamic
+@using System.Dynamic
+@using System.Linq
+
+@*<select form="myform" name="name">
+    @foreach (var item in Model.GroupBy(x => x.Name).Select(x => x.FirstOrDefault()))
+    {
+        <option asp-for="Name" value="@item.Name">@item.Name</option>
+    }
+</select>
+<br>*@
+@{
+    Func<stationMaster, string> groupByCity = x => x.city;
+    var groupedItems = Enumerable.GroupBy(Model.StationMasters, groupByCity);
+    Func<IGrouping<string, stationMaster>, stationMaster> selectFirst = x => x.FirstOrDefault();
+    var firstOfEachGroup = Enumerable.Select(groupedItems,selectFirst);
+}
+
+<select form="myform" name="city">
+    @foreach (var item in firstOfEachGroup)
+    {
+        <option asp-for="Name" value="@item.city">@item.city</option>
+    }
+</select>
+
+@*@Html.Partial("mapparital")*@
+        <br>
+<form id="myform" asp-action="map" method="post">
+   
+   @* @foreach (var checkboxitems in Model.categoryMaster)
+    {
+        <input type="checkbox" name="service" value="@checkboxitems.categoryName">
+        <p>@checkboxitems.categoryName</p>
+        <br/>
+    }*@
+    @for (int i = 0; i < Model.categoryMaster.Count; i++)
+    {
+        <input type="checkbox" name="service" value="@Model.categoryMaster[i].categoryName">
+        <p>@Model.categoryMaster[i].categoryName</p>
+        <br />
+    }
+    <input type="submit" value="Search" class="btn btn-primary">
+        </form>
+
+
+<div id="map"></div>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAWKtZc2XJqIacL0YK2mGOeDj0XvmO9uiw&callback=initMap&v=weekly"
+        defer></script>
+<script>
+    var markers = @Html.Raw(Json.Serialize(ViewData["Locations"]));
+</script>
+<script>
+
+    function initMap() {
+
+
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 4,
+            center: { lat: 29.8989051, lng: 69.4155077 }
+        });
+
+
+        for (var i = 0; i < markers.length; i++) {
+            var marker = new google.maps.Marker({
+                position: markers[i],
+                map: map,
+                title: markers[i].title,
+
+            });
+        }
+    }
+
+    window.initMap = initMap;
+
+</script>

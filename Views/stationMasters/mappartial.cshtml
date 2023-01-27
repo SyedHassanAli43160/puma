@@ -1,0 +1,12 @@
+﻿@model IEnumerable<puma.Models.stationMaster>
+<select form="myform" name="name">
+    @foreach (var item in Model)
+    {
+        <option asp-for="Name" value="@item.Name">@item.Name</option>
+    }
+</select>
+@*@Html.Partial("mapparital")*@
+<br>
+<form id="myform" asp-action="map" method="post">
+    <input type="submit" value="Search" class="btn btn-primary">
+</form>
