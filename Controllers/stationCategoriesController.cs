@@ -9,6 +9,24 @@ using puma.Models;
 
 namespace puma.Controllers
 {
+    public class Category
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
+    }
+    public class stationdetails 
+    { 
+        public int ID { get; set; }
+        public string Name { get; set; }
+    }
+
+    public class lists
+    {
+        public List<stationdetails> stationnames { get; set; }
+        public List<Category> categories { get; set; }
+
+    }
+
     public class stationCategoriesController : Controller
     {
         private readonly dbContext _context;
@@ -17,7 +35,7 @@ namespace puma.Controllers
         {
             _context = context;
         }
-
+      
         // GET: stationCategories
         public async Task<IActionResult> Index()
         {
@@ -46,8 +64,47 @@ namespace puma.Controllers
 
         // GET: stationCategories/Create
         public IActionResult Create()
-        {
-            return View();
+        { 
+           
+            var list = _context.StationMasters.ToList();
+          List<int> stationids=list.Select(m=>m.StationId).ToList();
+            var stationList = (from s in _context.StationMasters
+                              where stationids.Contains(s.StationId)
+                              select new stationdetails {
+                                  ID=s.StationId,
+                                  Name=s.Name
+                              }).ToList();
+
+
+            //    stationnames
+            //.Where(s => stationids.Contains(s.StationId))
+            //.Select(s => s.Name)
+            //.ToList();
+
+            var clist = _context.categoryMaster.ToList();
+            List<int> catid= clist.Select(m=>m.categoryId).ToList();
+            var catlist = (from c in _context.categoryMaster
+                           where catid.Contains(c.categoryId)
+                           select new Category
+                           {
+                               ID = c.categoryId,
+                               Name = c.categoryName
+                           }).ToList();
+            // .Where(s => catid.Contains(s.categoryId))
+            // .Select(s => s.categoryName)
+            //  .ToList();
+            lists obj = new lists() {
+
+                categories = catlist,
+                stationnames= stationList
+
+            };
+
+            SelectList stationlist = new SelectList(obj.stationnames.ToList());
+            List<Category> categorylist = obj.categories.ToList();
+            ViewBag.stationlist = stationlist;
+            ViewBag.categories = categorylist;  
+            return View(obj);
         }
 
         // POST: stationCategories/Create
@@ -55,11 +112,25 @@ namespace puma.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("stationCategoryId,StationId,categoryId")] stationCategory stationCategory)
+        public async Task<IActionResult> Create([Bind("StationId, categoryId")] stationCategory stationCategory, IEnumerable<int> catids)
         {
+            //var query = from a in _context.stationCategories where a.stationCategoryId == _context select a;
+          
+          
             if (ModelState.IsValid)
             {
-                _context.Add(stationCategory);
+                foreach (var item in catids)
+                {
+                    var newStationCategory = new stationCategory
+                    {
+                        StationId = stationCategory.StationId,
+                        categoryId = item
+                    };
+                    _context.Add(newStationCategory);
+                    //stationCategory.categoryId = item;
+                    //_context.Add(stationCategory);
+                  
+                }
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -89,6 +160,7 @@ namespace puma.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("stationCategoryId,StationId,categoryId")] stationCategory stationCategory)
         {
+          
             if (id != stationCategory.stationCategoryId)
             {
                 return NotFound();

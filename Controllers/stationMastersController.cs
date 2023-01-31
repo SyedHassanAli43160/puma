@@ -219,11 +219,13 @@ namespace puma.Controllers
         }
         private List<stationMaster> getstationlist()
         {
+            
             return _context.StationMasters.ToList();
         }
        private List<categoryMaster> getcategories()
         {
-            return _context.categoryMaster.ToList();
+            var a = _context.categoryMaster.Where(x => x.isdisabled == false).ToList();
+            return a;
         }
         private List<stationCategory> stationcategories()
         {

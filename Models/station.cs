@@ -26,7 +26,10 @@ namespace puma.Models
     }
     public class stationCategory
     {
+       
+        
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int stationCategoryId { get; set; }
         [ForeignKey("stationMaster")]
         public int StationId { get; set; }

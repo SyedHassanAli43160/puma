@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using puma.Models;
 
@@ -10,9 +11,11 @@ using puma.Models;
 namespace puma.Migrations
 {
     [DbContext(typeof(dbContext))]
-    partial class dbContextModelSnapshot : ModelSnapshot
+    [Migration("20230131112823_final")]
+    partial class final
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,7 +41,7 @@ namespace puma.Migrations
 
                     b.HasKey("categoryId");
 
-                    b.ToTable("categoryMaster", (string)null);
+                    b.ToTable("categoryMaster");
                 });
 
             modelBuilder.Entity("puma.Models.stationCategory", b =>
@@ -57,7 +60,7 @@ namespace puma.Migrations
 
                     b.HasKey("stationCategoryId");
 
-                    b.ToTable("stationCategories", (string)null);
+                    b.ToTable("stationCategories");
                 });
 
             modelBuilder.Entity("puma.Models.stationMaster", b =>
@@ -92,7 +95,7 @@ namespace puma.Migrations
 
                     b.HasKey("StationId");
 
-                    b.ToTable("StationMasters", (string)null);
+                    b.ToTable("StationMasters");
                 });
 
             modelBuilder.Entity("puma.Models.test", b =>
@@ -111,7 +114,7 @@ namespace puma.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("tests", (string)null);
+                    b.ToTable("tests");
                 });
 #pragma warning restore 612, 618
         }

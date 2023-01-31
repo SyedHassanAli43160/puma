@@ -1,4 +1,5 @@
-﻿@model puma.Models.stationCategory
+﻿@using puma.Models;
+@model puma.Controllers.lists
 
 @{
     ViewData["Title"] = "Create";
@@ -11,10 +12,41 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <select form="catform" name="StationId">
+
+            @foreach (var item in Model.stationnames)
+            {
+                <option asp-for="StationId" value="@item.ID">@item.Name</option>
+            }
+            </select>
+        <form asp-action="Create" id="catform" method="post">
+
+         
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="StationId" class="control-label"></label>
+                @*@Html.DropDownList("StationId", ViewBag.stationlist as SelectList)*@
+                
+                @*<select asp-items="@(new SelectList(ViewBag.stationlist,"stationnames"))"></select>*@
+                @*@Html.DropDownList("StationId", ViewBag.categories as SelectList)*@
+                @for(int i = 0; i < Model.categories.Count(); i++)
+                {
+                    <input type="checkbox" name="catids" value="@Model.categories[i].ID" />
+                    <p>@Model.categories[i].Name</p>
+                }
+                @*@foreach (var item in Model.categories)
+                {
+                    <input type="checkbox" name="categoryId" value="@item.ID"/>
+                    <p>@item.Name</p>
+                }*@
+                <br>
+            </div>
+               @* @foreach(var item in Model)
+                {
+                    <option value="@item.StationId">@item.StationId</option>
+                    
+                }*@
+             
+               @*<label asp-for="StationId" class="control-label"></label>
                 <input asp-for="StationId" class="form-control" />
                 <span asp-validation-for="StationId" class="text-danger"></span>
             </div>
@@ -22,7 +54,7 @@
                 <label asp-for="categoryId" class="control-label"></label>
                 <input asp-for="categoryId" class="form-control" />
                 <span asp-validation-for="categoryId" class="text-danger"></span>
-            </div>
+            </div>*@
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
