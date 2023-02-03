@@ -1,31 +1,42 @@
-﻿@model puma.Models.stationCategory
+﻿
+@model puma.Controllers.Lists
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Edit</h1>
+<h1>Create</h1>
 
 <h4>stationCategory</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+       @* <select form="catform" name="StationId">
+
+            @foreach (var item in Model.stations)
+            {
+                <option asp-for="StationId" value="@item.ID">@item.Name</option>
+            }
+            </select>*@
+        <form asp-action="Edit" id="catform" method="post">
+
+         
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="stationCategoryId" />
             <div class="form-group">
-                <label asp-for="StationId" class="control-label"></label>
-                <input asp-for="StationId" class="form-control" />
-                <span asp-validation-for="StationId" class="text-danger"></span>
+                <input name="StationId" value="@ViewBag.stationid" hidden/>
+                @for(int i = 0; i < Model.categories.Count(); i++)
+                {
+                    <input type="checkbox" name="catids" value="@Model.categories[i].ID" />
+                    <p>@Model.categories[i].Name</p>
+                }
+              
+                <br>
             </div>
+              
+            
             <div class="form-group">
-                <label asp-for="categoryId" class="control-label"></label>
-                <input asp-for="categoryId" class="form-control" />
-                <span asp-validation-for="categoryId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Edit" class="btn btn-primary" />
             </div>
         </form>
     </div>

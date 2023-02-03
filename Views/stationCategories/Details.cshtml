@@ -1,4 +1,4 @@
-﻿@model puma.Models.stationCategory
+﻿@model List<puma.Models.stationMaster>
 
 @{
     ViewData["Title"] = "Details";
@@ -10,22 +10,44 @@
 <div>
     <h4>stationCategory</h4>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.StationId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.StationId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.categoryId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.categoryId)
-        </dd>
-    </dl>
+    
+
+    <table style="width:100%" class="table table-bordered">
+        <tr>
+            <th>Name:</th>
+            <td>@Model[0].Name</td>
+        </tr>
+        <tr>
+            <th>Area:</th>
+            <td>@Model[0].area</td>
+        </tr>
+        <tr>
+            <th>City:</th>
+            <td>@Model[0].city</td>
+        </tr>
+        <tr>
+            <th>Description:</th>
+            <td>@Model[0].Description</td>
+        </tr>
+        <tr>
+            <th>Mapped Categories:</th>
+            <td>
+            @foreach (var item in ViewBag.categoryNames)
+                {
+                    <label>@item.ToString(),</label>
+                }
+       
+
+               
+            </td>
+        </tr>
+    </table>
+     
+           
+      
+    @*a*@
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.stationCategoryId">Edit</a> |
+  
     <a asp-action="Index">Back to List</a>
 </div>

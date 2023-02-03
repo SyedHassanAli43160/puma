@@ -1,4 +1,4 @@
-﻿@model IEnumerable<puma.Models.stationCategory>
+﻿@model List<puma.Controllers.Data>
 
 @{
     ViewData["Title"] = "Index";
@@ -14,29 +14,51 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.StationId)
+           Stations
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.categoryId)
+               Categories
+            </th>  <th>
+              Actions
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @foreach (var item in Model.GroupBy(x=>x.stid))
+        {
         <tr>
+         <td>
+                   
+            <p>@item.FirstOrDefault().stname </p>
+                <td>
+                    @foreach (var subitem in Model.Where(s => s.stid == item.Key))
+
+                    {
+
+                 
+                        <p> @subitem.catname</p>
+                   
+                    }
+
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.FirstOrDefault().stid">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.FirstOrDefault().stid">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.FirstOrDefault().stid">Delete</a>
+                    @*<p>@item.FirstOrDefault().stcatid </p>    *@                  
+
+                </td>
+         </td>
             <td>
-                @Html.DisplayFor(modelItem => item.StationId)
+       
+       
+                   @* <a asp-action="Edit" asp-route-id="@">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@ViewBag.data">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@ViewBag.data">Delete</a>*@
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.categoryId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.stationCategoryId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.stationCategoryId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.stationCategoryId">Delete</a>
-            </td>
+     
         </tr>
-}
+        }
     </tbody>
 </table>
