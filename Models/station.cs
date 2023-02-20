@@ -21,6 +21,7 @@ namespace puma.Models
         [Key]
         public int categoryId { get; set; }
         public string categoryName { get; set; }
+        public string categoryIcon { get; set; }
         public bool isdisabled { get; set; }
 
     }

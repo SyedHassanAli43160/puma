@@ -18,6 +18,11 @@
                 <input asp-for="categoryName" class="form-control" />
                 <span asp-validation-for="categoryName" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="categoryIcon" class="control-label"></label>
+                <input asp-for="categoryIcon" value="&#x" class="form-control" />
+                <span asp-validation-for="categoryIcon" class="text-danger"></span>
+            </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="isdisabled" /> @Html.DisplayNameFor(model => model.isdisabled)
