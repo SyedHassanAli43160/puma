@@ -50,31 +50,48 @@
 <div id="map"></div>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAWKtZc2XJqIacL0YK2mGOeDj0XvmO9uiw&callback=initMap&v=weekly"
         defer></script>
-<script>
-    var markers = @Html.Raw(Json.Serialize(ViewData["Locations"]));
-</script>
-<script>
 
+<script>
     function initMap() {
-
-
-
         var map = new google.maps.Map(document.getElementById('map'), {
             zoom: 4,
             center: { lat: 29.8989051, lng: 69.4155077 }
         });
-
-
-        for (var i = 0; i < markers.length; i++) {
-            var marker = new google.maps.Marker({
-                position: markers[i],
-                map: map,
-                title: markers[i].title,
-
-            });
-        }
     }
+    $('#myform').on('submit', function (event) {
+        // prevent the default form submit behavior
+        event.preventDefault();
 
-    window.initMap = initMap;
+        // retrieve the form data
+        var formData = new FormData($(this)[0]);
 
+        // make an AJAX request to the map action method
+        $.ajax({
+            url: '@Url.Action("map", "stationMasters")',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                // update the map with the new markers
+                var markers = data.locations;
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 4,
+                    center: { lat: 29.8989051, lng: 69.4155077 }
+                });
+                
+                for (var i = 0; i < markers.length; i++) {
+                    var marker = new google.maps.Marker({
+                        position: markers[i],
+                        map: map,
+                        title: markers[i].title
+                    });
+                }
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                // handle the error
+                console.log('Error:', errorThrown);
+            }
+        });
+    });
 </script>

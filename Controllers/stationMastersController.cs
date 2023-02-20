@@ -211,11 +211,12 @@ namespace puma.Controllers
                                    title = c.Name+c.city
                                }).ToList();
                     ViewData["Locations"] = res;
-                    return View(mymodel);
+
+                    return Json(new { locations = res });
                 }
             }
-         
-            return View(mymodel);
+
+            return Json(new { locations = new List<mapclass>() });
         }
         private List<stationMaster> getstationlist()
         {
