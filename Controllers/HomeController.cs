@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 using puma.Models;
 using System.Diagnostics;
 
@@ -12,9 +13,10 @@ namespace puma.Controllers
         {
             _logger = logger;
         }
-
+        [OutputCache(Duration =500)]
         public IActionResult Index()
         {
+            ViewBag.msg = DateTime.Now;
             return View();
         }
 

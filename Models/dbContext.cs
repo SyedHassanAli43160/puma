@@ -7,7 +7,6 @@ namespace puma.Models
     {
         public dbContext(DbContextOptions<dbContext> options):base(options) { }
         public DbSet<stationCategory>stationCategories { get; set; }
-        public DbSet<test> tests { get; set; }
         public virtual DbSet<stationMaster> StationMasters { get; set; }
         //public DbSet<puma.Models.stationMaster> stationMaster { get; set; } = default!;
         public DbSet<puma.Models.categoryMaster> categoryMaster { get; set; } = default!;

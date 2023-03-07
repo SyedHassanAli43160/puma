@@ -72,7 +72,7 @@ namespace puma.Controllers
                                 catid = table3.categoryId,
                                 stid = table1.StationId,
                                 catname = table3.categoryName,
-                                stname = table1.Name,
+                                stname = table1.CustomerName,
                                 stcatid = table2.stationCategoryId
                             }).ToListAsync();
 
@@ -90,18 +90,6 @@ namespace puma.Controllers
             var mappedcat = (from a in _context.stationCategories where a.StationId==id select a.categoryId).ToList();
            ViewBag.categoryNames = (from b in _context.categoryMaster where mappedcat.Contains(b.categoryId) select b.categoryName).ToList();
 
-            //if (id == null || _context.stationCategories == null)
-            //{
-            //    return NotFound();
-            //}
-
-            //var stationCategory = await _context.stationCategories
-            //    .FirstOrDefaultAsync(m => m.stationCategoryId == id);
-            //if (stationCategory == null)
-            //{
-            //    return NotFound();
-            //}
-
             return View(query);
         }
 
@@ -115,7 +103,7 @@ namespace puma.Controllers
                               where stationids.Contains(s.StationId)
                               select new Stationdetails {
                                   ID=s.StationId,
-                                  Name=s.Name
+                                  Name=s.CustomerName   
                               }).ToList();
 
 
@@ -183,7 +171,7 @@ namespace puma.Controllers
                               where stationids.Contains(s.StationId)
                               select new Stationdetails {
                                   ID=id,
-                                  Name=s.Name
+                                  Name=s.CustomerName
                               }).ToList();
 
 

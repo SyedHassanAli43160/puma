@@ -8,12 +8,15 @@ namespace puma.Models
     {
         [Key]
         public int StationId { get; set; }
-        public string Name { get; set; }
-        public string area { get; set; }
-        public string Description { get; set; }
-        public string city { get; set; }
+        public string navCode { get; set; }
+        public string CustomerName { get; set; }
+        public string regionName { get; set; }
+        public string provinceName { get; set; }
+        public string districtName { get; set; }
         public double latitude { get; set; }
-        public double longtitude { get;set;}
+        public double longtitude { get; set; }
+        public string Location { get; set; }
+       
 
     }
     public class categoryMaster
@@ -21,7 +24,6 @@ namespace puma.Models
         [Key]
         public int categoryId { get; set; }
         public string categoryName { get; set; }
-        public string categoryIcon { get; set; }
         public bool isdisabled { get; set; }
 
     }

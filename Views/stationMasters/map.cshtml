@@ -11,16 +11,17 @@
 </select>
 <br>*@
 @{
-    Func<stationMaster, string> groupByCity = x => x.city;
+    Func<stationMaster, string> groupByCity = x => x.provinceName;
     var groupedItems = Enumerable.GroupBy(Model.StationMasters, groupByCity);
     Func<IGrouping<string, stationMaster>, stationMaster> selectFirst = x => x.FirstOrDefault();
     var firstOfEachGroup = Enumerable.Select(groupedItems,selectFirst);
 }
-
-<select form="myform" name="city">
+<div class="row">
+    <div class="col">
+<select form="myform" name="province">
     @foreach (var item in firstOfEachGroup)
     {
-        <option asp-for="Name" value="@item.city">@item.city</option>
+                <option asp-for="Name" value="@item.provinceName">@item.provinceName</option>
     }
 </select>
 
@@ -28,28 +29,23 @@
         <br>
 <form id="myform" asp-action="map" method="post">
    
-    @{
-        var value = "&#x";
-    }
     @for (int i = 0; i < Model.categoryMaster.Count; i++)
     {
-        string iconunicode = Model.categoryMaster[i].categoryIcon;
-        @*<i style="font-family: FontAwesome;font-style: normal;">&#xf015;</i>*@
-      //  var icon = Model.categoryMaster[i].categoryIcon;
-        <i style="font-family: FontAwesome;font-style: normal;" class="fas fa-f042"></i>
-        
-        @*<i>@(String.Format("{0}{1}", value,icon))</i>*@
         <input type="checkbox" name="service" value="@Model.categoryMaster[i].categoryName">
-        <p>@Model.categoryMaster[i].categoryName</p>
+        <p style="margin: 1px;">@Model.categoryMaster[i].categoryName</p>
         <br />
     }
     <input type="submit" value="Search" class="btn btn-primary">
         </form>
+    </div>
+    <div class="col">
+        <div style="height:50vh;" id="map"></div>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAWKtZc2XJqIacL0YK2mGOeDj0XvmO9uiw&callback=initMap&v=weekly"
+                defer></script>
+    </div>
+</div>
 
 
-<div id="map"></div>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAWKtZc2XJqIacL0YK2mGOeDj0XvmO9uiw&callback=initMap&v=weekly"
-        defer></script>
 
 <script>
     function initMap() {
@@ -77,7 +73,7 @@
                 var markers = data.locations;
                 var map = new google.maps.Map(document.getElementById('map'), {
                     zoom: 4,
-                    center: { lat: 29.8989051, lng: 69.4155077 }
+                    center: { lat: 30.2442518, lng: 69.4925662 }
                 });
                 
                 for (var i = 0; i < markers.length; i++) {

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Versioning;
@@ -20,6 +21,7 @@ namespace puma.Controllers
 
         public string title { get; set; }
     }
+
     public class stationMastersController : Controller
     {
         private readonly dbContext _context;
@@ -28,11 +30,12 @@ namespace puma.Controllers
         {
             _context = context;
         }
-
+        [OutputCache(Duration = 3600)]
         // GET: stationMasters
         public async Task<IActionResult> Index()
         {
-              return _context.StationMasters != null ? 
+            ViewBag.msg = DateTime.Now;
+            return _context.StationMasters != null ? 
                           View(await _context.StationMasters.ToListAsync()) :
                           Problem("Entity set 'dbContext.stationMaster'  is null.");
         }
@@ -66,7 +69,7 @@ namespace puma.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("StationId,Name,area,Description,city,latitude,longtitude")] stationMaster stationMaster)
+        public async Task<IActionResult> Create([Bind("StationId,navCode,CustomerName,regionName,provinceName,districtName,latitude,longtitude,Location")] stationMaster stationMaster)
         {
             if (ModelState.IsValid)
             {
@@ -98,7 +101,7 @@ namespace puma.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("StationId,Name,area,Description,city,latitude,longtitude")] stationMaster stationMaster)
+        public async Task<IActionResult> Edit(int id, [Bind("StationId,navCode,CustomerName,regionName,provinceName,districtName,latitude,longtitude,Location")] stationMaster stationMaster)
         {
             if (id != stationMaster.StationId)
             {
@@ -181,18 +184,18 @@ namespace puma.Controllers
          
         }
         [HttpPost]
-        public IActionResult map(string city,IEnumerable<string> service)
+        public IActionResult map(string province,IEnumerable<string> service)
         {
             dynamic mymodel = new ExpandoObject();
             mymodel.StationMasters = getstationlist();
             mymodel.categoryMaster = getcategories();
 
-            if (city!=null)
+            if (province!=null)
             {
    
-                var cityname = _context.StationMasters.Where(x => x.city == city).FirstOrDefault();
+                var name = _context.StationMasters.Where(x => x.provinceName == province).FirstOrDefault();
          
-                if (city==cityname.city)
+                if (province == name.provinceName)
                 {
                     var ids = _context.stationCategories.ToList();
                      
@@ -201,14 +204,14 @@ namespace puma.Controllers
                                on c.StationId equals d.StationId
                                join e in _context.categoryMaster
                                on d.categoryId equals e.categoryId
-                               where c.city==city && service.Contains(e.categoryName)
+                               where c.provinceName==province && service.Contains(e.categoryName)
                                //service.Any(x=>x== e.categoryName)
 
                                select new mapclass
                                {
                                    lat = c.latitude,
                                    lng = c.longtitude,
-                                   title = c.Name+c.city
+                                   title = c.CustomerName +c.regionName+c.provinceName+c.districtName
                                }).ToList();
                     ViewData["Locations"] = res;
 

@@ -2,7 +2,7 @@
 <select form="myform" name="name">
     @foreach (var item in Model)
     {
-        <option asp-for="Name" value="@item.Name">@item.Name</option>
+        <option asp-for="Name" value="@item.provinceName">@item.provinceName</option>
     }
 </select>
 @*@Html.Partial("mapparital")*@

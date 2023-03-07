@@ -1,66 +1,92 @@
 ﻿@model IEnumerable<puma.Models.stationMaster>
-
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Stations</h1>
+<p>Last Updated On: @ViewBag.msg</p>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
+
+    <table id="example" class="hover" style="width:100%">
+        <thead>
+            <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                S#
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.area)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.city)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.latitude)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.longtitude)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.area)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.city)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.latitude)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.longtitude)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.StationId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.StationId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.StationId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                <th>
+                Nav-Code
+                </th>
+                <th>
+                   Customer Name
+                </th>
+                <th>
+                 Region Name
+                </th>
+                <th>
+                   Province Name
+                </th>
+                <th>
+                   District Name
+                </th>
+                <th>
+                  Lititudes
+                </th>
+                <th>
+                    Longtitude
+                </th>
+                <th>
+                   Locations
+                </th>
+                <th>
+                    Actions
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+        @{
+            var count = 0;
+        }
+            @foreach (var item in Model)
+            {
+             count = count + 1;
+            <tr>
+                <td>
+                    @count
+                </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.navCode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CustomerName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.regionName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.provinceName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.districtName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.latitude)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.longtitude)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Location)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.StationId">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.StationId">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.StationId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
