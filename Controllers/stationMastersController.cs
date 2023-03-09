@@ -30,11 +30,10 @@ namespace puma.Controllers
         {
             _context = context;
         }
-        [OutputCache(Duration = 3600)]
         // GET: stationMasters
         public async Task<IActionResult> Index()
         {
-            ViewBag.msg = DateTime.Now;
+           
             return _context.StationMasters != null ? 
                           View(await _context.StationMasters.ToListAsync()) :
                           Problem("Entity set 'dbContext.stationMaster'  is null.");
@@ -177,7 +176,7 @@ namespace puma.Controllers
             dynamic mymodel = new ExpandoObject();
             mymodel.StationMasters = getstationlist();
             mymodel.categoryMaster = getcategories();
-            //var locations = _context.StationMasters.ToList();
+
 
             return View(mymodel);
             
@@ -198,20 +197,18 @@ namespace puma.Controllers
                 if (province == name.provinceName)
                 {
                     var ids = _context.stationCategories.ToList();
-                     
+
                     var res = (from c in _context.StationMasters
                                join d in _context.stationCategories
                                on c.StationId equals d.StationId
                                join e in _context.categoryMaster
                                on d.categoryId equals e.categoryId
-                               where c.provinceName==province && service.Contains(e.categoryName)
-                               //service.Any(x=>x== e.categoryName)
-
+                               where c.provinceName == province && service.Contains(e.categoryName)
                                select new mapclass
                                {
                                    lat = c.latitude,
                                    lng = c.longtitude,
-                                   title = c.CustomerName +c.regionName+c.provinceName+c.districtName
+                                   title = c.CustomerName + "( "+c.districtName+" )"
                                }).ToList();
                     ViewData["Locations"] = res;
 

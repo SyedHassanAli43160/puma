@@ -17,32 +17,59 @@
     var firstOfEachGroup = Enumerable.Select(groupedItems,selectFirst);
 }
 <div class="row">
-    <div class="col">
-<select form="myform" name="province">
-    @foreach (var item in firstOfEachGroup)
-    {
+      <div class="col-sm-6">
+        <select form="myform" name="province">
+            @foreach (var item in firstOfEachGroup)
+            {
                 <option asp-for="Name" value="@item.provinceName">@item.provinceName</option>
-    }
-</select>
+            }
+        </select>
 
-@*@Html.Partial("mapparital")*@
-        <br>
-<form id="myform" asp-action="map" method="post">
-   
-    @for (int i = 0; i < Model.categoryMaster.Count; i++)
-    {
-        <input type="checkbox" name="service" value="@Model.categoryMaster[i].categoryName">
-        <p style="margin: 1px;">@Model.categoryMaster[i].categoryName</p>
-        <br />
-    }
-    <input type="submit" value="Search" class="btn btn-primary">
+        <form id="myform" asp-action="map" method="post">
+            @{
+
+                // initialize a counter variable to keep track of the number of categories printed so far
+                var counter = 0;
+            }
+
+            <div class="row">
+            @for (int i = 0; i < Model.categoryMaster.Count; i++)
+            {
+                // check if the current counter value is a multiple of 3
+                if (counter % 3 == 0 && counter != 0)
+                {
+                    // close the current row and start a new one
+                    @:</div><div class="row">
+                }
+
+                // print the current category checkbox and label
+                <div class="col-md-4 mt-3">
+                    <input type="checkbox" class="" name="service" value="@Model.categoryMaster[i].categoryName">
+                    <label style="margin: 1px;">@Model.categoryMaster[i].categoryName</label>
+                </div>
+
+                // increment the counter variable
+                counter++;
+            }
+
+           @* // close the last row if there are any remaining columns*@
+          @if(counter % 3 != 0)
+{
+    @Html.Raw("</div>")
+}
+            
+            <div class="col-md-12 mt-3">
+                <input type="submit" value="Search" class="btn btn-primary">
+            </div>
         </form>
     </div>
-    <div class="col">
+
+       
+        <div class="col-sm-6">
         <div style="height:50vh;" id="map"></div>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAWKtZc2XJqIacL0YK2mGOeDj0XvmO9uiw&callback=initMap&v=weekly"
                 defer></script>
-    </div>
+          </div>
 </div>
 
 

@@ -4,10 +4,10 @@ using puma.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddOutputCache(options =>
-{
-    options.AddBasePolicy(builder => builder.Cache());
-});
+//builder.Services.AddOutputCache(options =>
+//{
+//    options.AddBasePolicy(builder => builder.Cache());
+//});
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<dbContext>(
     options => {
@@ -23,7 +23,7 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
 }
-app.UseOutputCache();
+//app.UseOutputCache();
 app.UseStaticFiles();
 
 app.UseRouting();
